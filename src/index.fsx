@@ -14,15 +14,38 @@ open Vaughan.ScaleHarmonizer
 open Vaughan.Scales
 
 module SonicPiConverter =
-  let toSonicPi noteList =
-    let replace f (r:string) (s:string) = 
+  let private replace f (r:string) (s:string) = 
       s.Replace(f,r)
-
-    noteList 
-      |> List.map( fun note ->
-        (sprintf "%A" note)
-          |> (replace "Flat" "b" >> replace "Sharp""s")
+  let convertNote note =
+    (sprintf "%A" note)
+    |> (replace "Flat" "b" 
+      >> replace "Sharp" "s"
       )
 
-let cIonian = createScale LydianAugmented C
-cIonian |> SonicPiConverter.toSonicPi
+  let toChord (chord:string) = 
+    let note = chord.Substring(0,1)
+    let isMinor = Regex.IsMatch(chord,"Min",RegexOptions.IgnoreCase)
+    let tone = if isMinor then "minor" else "major"
+    sprintf "chord(:%s,:%s)" note tone
+
+  let toSonicPiNotation noteList =
+    noteList |> List.map convertNote
+
+module Composer =   
+  let private getSonicChord chord degree = 
+    chord
+      |> triadsHarmonizer degree 
+      |> name
+      |> SonicPiConverter.toChord 
+
+  let anatole = [
+      ScaleDgrees.I
+      ScaleDgrees.VI
+      ScaleDgrees.II
+      ScaleDgrees.V
+    ] 
+  let getChords suite baseChord = 
+    suite |> List.map( fun d -> getSonicChord baseChord d )
+
+let s = createScale Ionian C
+let chords = Composer.getChords Composer.anatole s

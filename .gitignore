@@ -2,3 +2,5 @@
 node_modules
 packages
 .paket
+paket.lock
+npm-debug.log
