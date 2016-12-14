@@ -13,6 +13,7 @@ open Vaughan.GuitarTab
 open Vaughan.ScaleHarmonizer
 open Vaughan.Scales
 
+
 module SonicPiConverter =
 
   let private replace f (r:string) (s:string) = 
@@ -41,29 +42,48 @@ module SonicPiConverter =
     noteList 
     |> List.map convertNote
 
+module Progression = 
 
-module Composer =   
+  let ThreeChordsProgression1 = [ScaleDgrees.I; ScaleDgrees.VI; ScaleDgrees.V; ScaleDgrees.V]
 
-  let Anatole = [
-      ScaleDgrees.I
-      ScaleDgrees.VI
-      ScaleDgrees.II
-      ScaleDgrees.V
-    ] 
+  let ThreeChordsProgression2 = [ScaleDgrees.I; ScaleDgrees.I; ScaleDgrees.IV; ScaleDgrees.V]
 
-  let DyerMaker = [
-    ScaleDgrees.I
-    ScaleDgrees.VI
-    ScaleDgrees.IV
-    ScaleDgrees.V
-  ] 
+  let ThreeChordsProgression3 = [ScaleDgrees.I; ScaleDgrees.VI; ScaleDgrees.I; ScaleDgrees.V]
 
-  let Otherside = [
-    ScaleDgrees.I
-    ScaleDgrees.VI
-    ScaleDgrees.III
-    ScaleDgrees.VII
-  ] 
+  let ThreeChordsProgression4 = [ScaleDgrees.I; ScaleDgrees.IV; ScaleDgrees.V; ScaleDgrees.IV]
+
+  let Anatole = [ScaleDgrees.I; ScaleDgrees.VI; ScaleDgrees.II; ScaleDgrees.V] 
+  
+  let Circle = [ScaleDgrees.VI; ScaleDgrees.II; ScaleDgrees.V; ScaleDgrees.I ] 
+
+  let Pop1 = [ScaleDgrees.I; ScaleDgrees.VI; ScaleDgrees.IV; ScaleDgrees.V ] 
+
+  let Pop2 = [ScaleDgrees.I; ScaleDgrees.VI; ScaleDgrees.IV; ScaleDgrees.V ] 
+
+  let Otherside = [ScaleDgrees.I; ScaleDgrees.VI; ScaleDgrees.III; ScaleDgrees.VII ]
+
+  let Andalusia =  [ScaleDgrees.I; ScaleDgrees.VII;ScaleDgrees.VI;ScaleDgrees.V] 
+
+  let getRandom() = 
+    let p = [|
+      ThreeChordsProgression1
+      ThreeChordsProgression2
+      ThreeChordsProgression3
+      ThreeChordsProgression4
+      Anatole
+      Circle
+      Pop1
+      Pop2
+      Otherside
+      Andalusia
+    |]
+    let index = System.Random().Next(p.Length) 
+    p.[index]
+
+
+module Composer = 
+
+  open Progression
   
   let private getSonicChord chord degree = 
     chord
@@ -76,4 +96,4 @@ module Composer =
     |> List.map( fun d -> d |> getSonicChord baseChord )
 
 let s = createScale Ionian C
-let chords = Composer.getChords Composer.Anatole s
+let chords = Composer.getChords (Progression.getRandom()) s
