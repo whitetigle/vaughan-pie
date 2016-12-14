@@ -389,7 +389,10 @@ function fsFormat(str) {
 
 
 
-
+function join(delimiter, xs) {
+    xs = typeof xs == "string" ? getRestParams(arguments, 1) : xs;
+    return (Array.isArray(xs) ? xs : Array.from(xs)).join(delimiter);
+}
 
 function padLeft(str, len, ch, isRight) {
     ch = ch || " ";
@@ -409,6 +412,7 @@ var _createClass$1 = function () { function defineProperties(target, props) { fo
 
 function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+// This module is split from List.ts to prevent cyclic dependencies
 function ofArray(args, base) {
     var acc = base || new List$1();
     for (var i = args.length - 1; i >= 0; i--) {
@@ -863,6 +867,9 @@ var _createClass$2 = function () { function defineProperties(target, props) { fo
 
 function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+// ----------------------------------------------
+// These functions belong to Seq.ts but are
+// implemented here to prevent cyclic dependencies
 
 
 var MapTree = function MapTree(caseName, fields) {
@@ -996,6 +1003,44 @@ function tree_mem(comparer, k, m) {
         }
     }() : false;
 }
+// function tree_foldFromTo(comparer: IComparer<any>, lo: any, hi: any, f: (k:any, v:any, acc: any) => any, m: MapTree, x: any): any {
+//   if (m.Case === "MapOne") {
+//     var cLoKey = comparer.Compare(lo, m.Fields[0]);
+//     var cKeyHi = comparer.Compare(m.Fields[0], hi);
+//     var x_1 = (cLoKey <= 0 ? cKeyHi <= 0 : false) ? f(m.Fields[0], m.Fields[1], x) : x;
+//     return x_1;
+//   }
+//   else if (m.Case === "MapNode") {
+//     var cLoKey = comparer.Compare(lo, m.Fields[0]);
+//     var cKeyHi = comparer.Compare(m.Fields[0], hi);
+//     var x_1 = cLoKey < 0 ? tree_foldFromTo(comparer, lo, hi, f, m.Fields[2], x) : x;
+//     var x_2 = (cLoKey <= 0 ? cKeyHi <= 0 : false) ? f(m.Fields[0], m.Fields[1], x_1) : x_1;
+//     var x_3 = cKeyHi < 0 ? tree_foldFromTo(comparer, lo, hi, f, m.Fields[3], x_2) : x_2;
+//     return x_3;
+//   }
+//   return x;
+// }
+// function tree_foldSection(comparer: IComparer<any>, lo: any, hi: any, f: (k:any, v:any, acc: any) => any, m: MapTree, x: any) {
+//   return comparer.Compare(lo, hi) === 1 ? x : tree_foldFromTo(comparer, lo, hi, f, m, x);
+// }
+// function tree_loop(m: MapTree, acc: any): List<[any,any]> {
+//   return m.Case === "MapOne"
+//     ? new List([m.Fields[0], m.Fields[1]], acc)
+//     : m.Case === "MapNode"
+//       ? tree_loop(m.Fields[2], new List([m.Fields[0], m.Fields[1]], tree_loop(m.Fields[3], acc)))
+//       : acc;
+// }
+// function tree_toList(m: MapTree) {
+//   return tree_loop(m, new List());
+// }
+// function tree_toArray(m: MapTree) {
+//   return Array.from(tree_toList(m));
+// }
+// function tree_ofList(comparer: IComparer<any>, l: List<[any,any]>) {
+//   return Seq.fold((acc: MapTree, tupledArg: [any, any]) => {
+//     return tree_add(comparer, tupledArg[0], tupledArg[1], acc);
+//   }, tree_empty(), l);
+// }
 function tree_mkFromEnumerator(comparer, acc, e) {
     var cur = e.next();
     while (!cur.done) {
@@ -1271,6 +1316,7 @@ var _aFunction = function(it){
   return it;
 };
 
+// optional / simple context binding
 var aFunction = _aFunction;
 var _ctx = function(fn, that, length){
   aFunction(fn);
@@ -1309,6 +1355,7 @@ var _fails = function(exec){
   }
 };
 
+// Thank's IE8 for his funny defineProperty
 var _descriptors = !_fails(function(){
   return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
@@ -1324,6 +1371,7 @@ var _ie8DomDefine = !_descriptors && !_fails(function(){
   return Object.defineProperty(_domCreate('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
 
+// 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject$2 = _isObject;
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
@@ -3249,8 +3297,8 @@ var SonicPiConverter = function (__exports) {
   };
 
   var convertNote = __exports.convertNote = function (note) {
-    return function ($var7) {
-      return replace$$1("Sharp", "s", replace$$1("Flat", "b", $var7));
+    return function ($var3) {
+      return replace$$1("Sharp", "s", replace$$1("Flat", "b", $var3));
     }(fsFormat("%A")(function (x) {
       return x;
     })(note));
@@ -3282,9 +3330,7 @@ var SonicPiConverter = function (__exports) {
   };
 
   var output = __exports.output = function (lines) {
-    return fold(function (x, y) {
-      return x + y;
-    }, "\n", lines);
+    return join(",\n", lines);
   };
 
   return __exports;

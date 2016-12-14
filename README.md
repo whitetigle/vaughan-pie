@@ -11,6 +11,10 @@ SonicPi Cheet Generator using Fable / F# / [Vaughan](https://github.com/pedromsa
 ## Credits
 - loading bar from http://loading.io/
 
+### Note
+To prevent a bug with Fable, a custom version of Vaughan is used.
+
+
 Made while drinking :coffee: by [@whitetigle](https://github.com/whitetigle) 
 
 Powered by [@fable-compiler](https://github.com/fable-compiler) :rocket: 

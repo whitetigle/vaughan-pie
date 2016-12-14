@@ -1,5 +1,5 @@
 #r "../node_modules/fable-core/Fable.Core.dll"
-#load "../../vaughan/Vaughan/Vaughan.fs"
+#load "Vaughan.fs"
 
 open Fable.Core
 open Fable.Core.JsInterop
@@ -36,7 +36,7 @@ module SonicPiConverter =
     |> List.map convertNote
 
   let output lines = 
-    lines |> List.fold (+) "\n" 
+    lines |> String.concat ",\n"
 
 module Progression = 
   
