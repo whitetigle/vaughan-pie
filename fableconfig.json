@@ -1,0 +1,9 @@
+{
+  "projFile": "src/index.fsx",
+  "sourceMaps": true,
+  "babelPlugins": ["transform-runtime"],
+  "watch": true,
+  "rollup": {
+    "dest": "out/bundle.js"
+  }
+}

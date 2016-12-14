@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "name": "vaughan-pie",
+  "version": "1.0.0",
+  "main": "out/index.js",
+  "dependencies": {
+    "babel-runtime": "^6.11.6",
+    "fable-core": "^0.7.15"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "browser-sync": "^2.11.1",
+    "fable-core": "^0.7.15",
+    "fable-import-fetch": "^0.2.4",
+    "finalhandler": "^0.5.0",
+    "open": "0.0.5",
+    "rollup-plugin-replace": "^1.1.1",
+    "serve": "^1.4.0"
+  },
+  "scripts": {
+    "start": "serve --port 4000",
+    "sync": "browser-sync start -c bs-config.js",
+    "build": "fable",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "proxy": "node proxy.js"
+  },
+  "keywords": [],
+  "author": "François Nicaise",
+  "license": "MIT"
+}
