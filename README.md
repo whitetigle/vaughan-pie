@@ -8,12 +8,11 @@ SonicPi Cheet Generator using Fable / F# / [Vaughan](https://github.com/pedromsa
 - `npm run sync` to launch browser sync.
 - `npm start proxy` to start our websocket/udp proxy
 
-## Credits
-- loading bar from http://loading.io/
-
-### Note
+### Notes
 To prevent a bug with Fable, a custom version of Vaughan is used.
 
+## Credits
+loading bar from http://loading.io/
 
 Made while drinking :coffee: by [@whitetigle](https://github.com/whitetigle) 
 
