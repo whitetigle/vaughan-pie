@@ -1,18 +1,11 @@
 #r "../node_modules/fable-core/Fable.Core.dll"
-#r "../packages/Vaughan/lib/net45/Vaughan.dll"
+#load "../../vaughan/Vaughan/Vaughan.fs"
 
 open Fable.Core
 open Fable.Core.JsInterop
 open Fable.Import
 open System.Text.RegularExpressions
-
-open Vaughan.Notes
-open Vaughan.Chords
-open Vaughan.Guitar
-open Vaughan.GuitarTab
 open Vaughan.ScaleHarmonizer
-open Vaughan.Scales
-
 
 module SonicPiConverter =
 
@@ -42,7 +35,12 @@ module SonicPiConverter =
     noteList 
     |> List.map convertNote
 
+  let output lines = 
+    lines |> List.fold (+) "\n" 
+
 module Progression = 
+  
+  open Vaughan.ScaleHarmonizer
 
   let ThreeChordsProgression1 = [ScaleDgrees.I; ScaleDgrees.VI; ScaleDgrees.V; ScaleDgrees.V]
 
@@ -84,6 +82,8 @@ module Progression =
 module Composer = 
 
   open Progression
+  open Vaughan.Chords
+  open Vaughan.ScaleHarmonizer
   
   let private getSonicChord chord degree = 
     chord
@@ -95,5 +95,11 @@ module Composer =
     suite 
     |> List.map( fun d -> d |> getSonicChord baseChord )
 
+// Entry point
+open Vaughan.Scales
+open Vaughan.Notes
 let s = createScale Ionian C
 let chords = Composer.getChords (Progression.getRandom()) s
+let output = chords |> SonicPiConverter.output
+Browser.console.log output
+Browser.window.document.getElementById("output").innerHTML <- output
