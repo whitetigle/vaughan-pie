@@ -1,5 +1,5 @@
 # vaughan-pie
-SonicPi Cheet Generator using Fable / F# / [https://github.com/pedromsantos/vaughan](Vaughan) library
+SonicPi Cheet Generator using Fable / F# / [Vaughan](https://github.com/pedromsantos/vaughan) library
 
 - `npm install` to install dependencies.
 - `paket install` to install .NET dependencies.
